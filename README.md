@@ -1,2 +1,2 @@
-# Buldozer
-Buldozer CMS made in FastAPI Frameworkd
+# BulDozer
+BulDozer CMS made in FastAPI Frameworkd

@@ -1,2 +1,4 @@
 # BulDozer
-BulDozer CMS made in FastAPI Frameworkd
+BulDozer CMS\APP manager made in FastAPI Framework
+For Sites and Mobiles Apps
+

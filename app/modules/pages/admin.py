@@ -53,7 +53,7 @@ async def get_categories_list(request: Request,
         return templates.TemplateResponse("categories_list.html", 
                                          {
                                           "request": request,
-                                          "cfg": cfg_site.SITE_NAME,
+                                          "cfg": cfg_site,
                                           "message": message,
                                           "categories": categories
                                          }
@@ -75,7 +75,7 @@ def create_category_form(request: Request,
         return templates.TemplateResponse("category_create_form.html",
                                           {
                                            "request": request,
-                                           "cfg": cfg_site.SITE_NAME,
+                                           "cfg": cfg_site,
                                           }
                                       )
     return RedirectResponse("/user/login", status_code = status.HTTP_303_SEE_OTHER)
@@ -139,7 +139,7 @@ async def get_pages_list(request: Request,
         return templates.TemplateResponse("pages_list.html", 
                                              {
                                               "request": request,
-                                              "cfg": cfg_site.SITE_NAME,
+                                              "cfg": cfg_site,
                                               "message": message,
                                               "pages": pages
                                              }
@@ -166,7 +166,7 @@ async def create_page_form(request: Request,
         return templates.TemplateResponse("page_create_form.html",
                                               {
                                                "request": request,
-                                               "cfg": cfg_site.SITE_NAME,
+                                               "cfg": cfg_site,
                                                "categories": categories,
                                               }
                                           )

@@ -182,15 +182,18 @@ async def page_category(request: Request,
         try:
             template =\
             page.template + ".html" if str(page.template) else None  
-
-            page = Page(page_title = page.title,
+            page = Page(page_name = page.name,
+                        content = page.content,
                         slug = page.slug,
-                        category_id = page.category_id,
-                        template = template)
+                        category_id = page.category_id)
+            page_settings = PageSettings(title = page.page_name,
+                                         template = template)
+            page.page_settings = page_settings      
             db.add(page)
             await db.commit()
             await db.refresh(page)
         except Exception as e:
+            print(e)
             return templates.TemplateResponse("error.html", 
                                                   { 
                                                     "request": request,

@@ -34,7 +34,6 @@ class PageSettings(Base):
     page_id = Column(Integer, ForeignKey("pages.id"), primary_key=True, index=True)
     title = Column(String)
     keywords = Column(String, nullable=True)
-    description = Column(String, nullable=True)
     is_homepage = Column(Boolean, default=False, index=True)
     template = Column(String, default="page_base.html")
     

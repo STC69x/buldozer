@@ -10,13 +10,13 @@ class PageSettings(PageSettingsBase):
     page_id: int
 
 class PageBase(BaseModel):
-    title: str
+    name: str
     content: str
     category_id: int 
     slug: str
 
 class PageCreate(PageBase):
-    pass
+    template: Optional[str]
 
 class Page(PageBase):
     id: int

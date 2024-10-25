@@ -112,7 +112,6 @@ async def get_page(request: Request, slug: str,
                                     status_code = status.HTTP_302_FOUND)
     if api:
         raise notfound
-    print(cfg_site)
     return templates.TemplateResponse(cfg.ERROR_404_TEMPLATE, 
                                       {
                                        "request": request,

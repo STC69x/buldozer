@@ -14,7 +14,7 @@ from typing import Annotated, Optional
 
 from app.dependencies import get_db, get_current_user
 from app.config.database import AsyncSession
-from app.config.config import Config
+from app.config.config import Config, ConfigSite
 from app.modules.pages.schemas import  CategoryCreate, PageCreate
 from app.modules.pages.models import Category, Page, PageSettings
 from app.handlers.auth_role_checker import auth_and_roles_required
@@ -23,6 +23,7 @@ from app.handlers.http_errors import noauth, noapi
 
 router = APIRouter()
 cfg = Config()
+cfg_site = ConfigSite()
 templates = Jinja2Templates(directory = cfg.TEMPLATE_ADMIN_PATH)
 router = APIRouter(tags = ["adminpanel"], prefix = "/adminpanel")
 
@@ -52,7 +53,7 @@ async def get_categories_list(request: Request,
         return templates.TemplateResponse("categories_list.html", 
                                          {
                                           "request": request,
-                                          "sitename": cfg.SITE_NAME,
+                                          "cfg": cfg_site.SITE_NAME,
                                           "message": message,
                                           "categories": categories
                                          }
@@ -74,7 +75,7 @@ def create_category_form(request: Request,
         return templates.TemplateResponse("category_create_form.html",
                                           {
                                            "request": request,
-                                           "sitename": cfg.SITE_NAME,
+                                           "cfg": cfg_site.SITE_NAME,
                                           }
                                       )
     return RedirectResponse("/user/login", status_code = status.HTTP_303_SEE_OTHER)
@@ -138,7 +139,7 @@ async def get_pages_list(request: Request,
         return templates.TemplateResponse("pages_list.html", 
                                              {
                                               "request": request,
-                                              "sitename": cfg.SITE_NAME,
+                                              "cfg": cfg_site.SITE_NAME,
                                               "message": message,
                                               "pages": pages
                                              }
@@ -165,7 +166,7 @@ async def create_page_form(request: Request,
         return templates.TemplateResponse("page_create_form.html",
                                               {
                                                "request": request,
-                                               "sitename": cfg.SITE_NAME,
+                                               "cfg": cfg_site.SITE_NAME,
                                                "categories": categories,
                                               }
                                           )

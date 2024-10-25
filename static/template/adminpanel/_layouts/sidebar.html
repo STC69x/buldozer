@@ -1,0 +1,51 @@
+  <!-- sidebar -->
+    <div class="col-md-3 col-lg-2 px-0 position-fixed h-100 w-sm-100 bg-white shadow-lg sidebar" id="sidebar">
+        <h1 class="text-primary d-flex my-4 justify-content-center">{{ sitename }} -  Panel</h1>
+        <div class="list-group rounded-0">
+            <a href="#" class="list-group-item list-group-item-action border-0 d-flex align-items-center">
+                <span class="bi bi-border-all"></span>
+                <span class="ml-2">Главная</span>
+            </a>
+            <button
+                class="list-group-item list-group-item-action border-0 d-flex justify-content-between align-items-center"
+                type="button" data-bs-toggle="collapse" data-bs-target="#formscontrol" aria-expanded="false"
+                aria-controls="formscontrol">
+                <div>
+                    <i class="bi bi-card-list"></i>
+                    <span class="ml-2">Категории</span>
+                </div>
+                <span class="bi bi-chevron-down small"></span>
+            </button>
+            <div class="collapse" id="formscontrol">
+                <div class="list-group">
+                    <a class="list-group-item list-group-item-action border-0 pl-5 form1" href="/adminpanel/categories">Список</a>
+                </div>
+                <div class="list-group">
+                    <a class="list-group-item list-group-item-action border-0 pl-5 form1" href="/adminpanel/category/create">Создать</a>
+                </div>
+            </div>
+            <button
+                class="list-group-item list-group-item-action border-0 d-flex justify-content-between align-items-center"
+                type="button" data-bs-toggle="collapse" data-bs-target="#tablecontrol" aria-expanded="false"
+                aria-controls="tablecontrol">
+                <div>
+                    <i class="bi bi-table"></i>
+                    <span class="ml-2">Страницы</span>
+                </div>
+                <span class="bi bi-chevron-down small"></span>
+            </button>
+            <div class="collapse" id="tablecontrol">
+                <div class="list-group">
+                    <a class="list-group-item list-group-item-action border-0 pl-5 table1" href="/adminpanel/pages">Список</a>
+                </div>
+                <div class="list-group">
+                    <a class="list-group-item list-group-item-action border-0 pl-5 table1" href="/adminpanel/page/create">Создать страниицу</a>
+                </div>
+                <div class="list-group">
+                    <a class="list-group-item list-group-item-action border-0 pl-5 table1" href="/adminpanel/page/create">TODO HOMEPAGE</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+

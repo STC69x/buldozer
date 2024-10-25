@@ -1,0 +1,10 @@
+fastapi[standart]
+fastapi-sqlalchemy
+sqlalchemy[asyncio]
+asyncpg
+python-multipart
+jinja2
+passlib
+bcrypt
+pyjwt
+

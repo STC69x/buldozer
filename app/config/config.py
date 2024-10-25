@@ -11,7 +11,8 @@ class Config:
     
     SECRET_KEY = os.getenv('SECRET_KEY', 'secret')
     ALGORITHM = os.getenv('ALGORITHM', 'HS256')
-
+    TOKEN_LIFE = 120
+    
     ALLOWED_HOSTS = ["*"]
     ALLOWED_METHODS = ["*"]
     ALLOWED_HEADERS = ["*"]
@@ -23,10 +24,7 @@ class Config:
     DEFAULT_CATEGORY_TEMPLATE = "default_category.html"
 
 
-    #SECRET_KEY = "replace_your_secret_key"
-    #ALGORITHM = "HS256"
-    TOKEN_LIFE = 120
-    
+
 
 class ConfigSite:
         SITE_NAME = "GNU w0rld App FrameWork"

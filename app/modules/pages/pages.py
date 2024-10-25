@@ -137,7 +137,7 @@ async def get_homepage(request: Request,
         template_is_set = homepage.page_settings.template    
         template = template_is_set + ".html"\
                    if str(template_is_set) else cfg.DEFAULT_TEMPALTE
-    return templates.TemplateResponse(template, 
+        return templates.TemplateResponse(template, 
                                               {
                                                "request": request,
                                                "page": homepage,

@@ -40,9 +40,9 @@
                 </div>
             </div>
             <div class="panel-data">
-            {% if message == "created" %}
+            {% if message  %}
             <div class="alert alert-success" role="alert">
-                  <h4 class="alert-heading">Категория создана!</h4>
+                  <h4 class="alert-heading">{% if message == "created" %}Страница создана!{% elif message == "edited" %}Страница отредоктирована{% endif %}</h4>
             </div>
             {% endif %}
                 <div class="table-responsive">
@@ -60,10 +60,12 @@
     {% for page in pages %}
     <tr>
       <th scope="row">{{ page.id }}</th>
-      <td>{{ page.page_title }}</td>
+      <td>{{ page.page_name }}</td>
       <td>{{ page.slug }}</td>
     <td>{% if page.page_settings.template %}{{ page.page_settings.template }}{% else %}По умолчанию{% endif %}</td>
-    <td>TODO EDIT\DELETE\DIS</td>
+    <td>
+        <a href="page/edit/{{ page.id }}"><button type="button" class="btn btn-success">Редактирование</button></a>
+\DELETE\DIS</td>
     </tr>
     {% endfor %}
   </tbody>

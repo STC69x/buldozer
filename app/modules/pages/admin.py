@@ -15,7 +15,7 @@ from typing import Annotated, Optional
 from app.dependencies import get_db, get_current_user
 from app.config.database import AsyncSession
 from app.config.config import Config, ConfigSite
-from app.modules.pages.schemas import  CategoryCreate, PageCreate
+from app.modules.pages.schemas import  CategoryCreate, PageCreate, PageEdit
 from app.modules.pages.models import Category, Page, PageSettings
 from app.handlers.auth_role_checker import auth_and_roles_required
 from app.handlers.http_errors import noauth, noapi
@@ -173,11 +173,11 @@ async def create_page_form(request: Request,
     return RedirectResponse("/user/login", status_code = status.HTTP_303_SEE_OTHER)
 
 @router.post("/page/create")
-async def page_category(request: Request,
-                        page: Annotated[PageCreate, Form()], 
-                        current_user = Depends(get_current_user),
-                        db: AsyncSession = Depends(get_db),
-                        api: bool = False):
+async def page_create(request: Request,
+                      page: Annotated[PageCreate, Form()], 
+                      current_user = Depends(get_current_user),
+                      db: AsyncSession = Depends(get_db),
+                      api: bool = False):
     if auth_and_roles_required(current_user, ["administrator"]):
         try:
             template =\
@@ -193,7 +193,6 @@ async def page_category(request: Request,
             await db.commit()
             await db.refresh(page)
         except Exception as e:
-            print(e)
             return templates.TemplateResponse("error.html", 
                                                   { 
                                                     "request": request,
@@ -208,9 +207,9 @@ async def page_category(request: Request,
         return noauth     
     return RedirectResponse("/user/login", status_code = status.HTTP_303_SEE_OTHER)
 
-###############################
+##################################
 #Редактирование страницы\Page Edit
-###############################
+##################################
 @router.get("/page/edit/{page_id}")
 async def edit_page_form(request: Request,
                          page_id: int,
@@ -239,26 +238,25 @@ async def edit_page_form(request: Request,
 @router.post("/page/edit/{page_id}")
 async def edit_page(request: Request,
                     page_id: int,
-                    page: Annotated[PageCreate, Form()], 
+                    page_form: Annotated[PageEdit, Form()], 
                     current_user = Depends(get_current_user),
                     db: AsyncSession = Depends(get_db),
                     api: bool = False):
     if auth_and_roles_required(current_user, ["administrator"]):
         try:
-            template =\
-            page.template + ".html" if str(page.template) else None  
-            page = Page(page_name = page.name,
-                        content = page.content,
-                        slug = page.slug,
-                        category_id = page.category_id)
-            page_settings = PageSettings(title = page.page_name,
-                                         template = template)
-            page.page_settings = page_settings      
-            db.add(page)
+            page = (await db.execute(select(Page)\
+                                     .filter(Page.id == page_id)))\
+                                     .scalar_one_or_none()
+                                     
+            page.page_name = page_form.name
+            page.content = page_form.content
+            page.category_id = page_form.category_id
+            page.slug = page_form.slug
+            page.page_settings.template = page_form.template 
+            
             await db.commit()
             await db.refresh(page)
         except Exception as e:
-            print(e)
             return templates.TemplateResponse("error.html", 
                                                   { 
                                                     "request": request,
@@ -267,7 +265,7 @@ async def edit_page(request: Request,
                                               )
         if api:
             return page
-        return RedirectResponse("/adminpanel/pages?message=created",
+        return RedirectResponse("/adminpanel/pages?message=edited",
                                 status_code = status.HTTP_303_SEE_OTHER)
     if api:
         return noauth     

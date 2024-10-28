@@ -54,7 +54,7 @@
               </div>
               <div class="mb-3">
                   <label for="template" class="form-label">Шаблон</label>
-                  <input type="template" class="form-control" name="template" id="template">
+                  <input type="template" class="form-control" name="template" id="template" value="{{page.page_settings.template }}">
               </div>
               <div class="mb-3">
                   <label for="content" class="form-label">Контент</label>
@@ -62,10 +62,13 @@
                   <div id="contentHelp" class="form-text">Контент (HTML-code)</div>
               </div>
             <select class="form-select" name="category_id" aria-label="choose_category">
-              <option value="{{ page.category.id }}">{% if page.category.id == 0 %}Без категории{% else %}{{ page.categoty.name }}{% endif %}</option>
               {% for category in categories %}
-              <option values="{{ category.id }}">{{ category.name }}</option>
-              {% endfor %}            
+              {% if category.id == page.category.id %}
+              <option selected value="{{ page.category.id }}">{% if page.category.id == 0 %}Без категории{% else %}{{ page.category.name }}{% endif %}</option>
+              {% else %}
+              <option values="{{ category.id }}">{{ category.name | replace("root", "Без категории")}}</option>
+              {% endif %}
+            {% endfor %}            
             </select>
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>

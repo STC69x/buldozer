@@ -207,3 +207,68 @@ async def page_category(request: Request,
     if api:
         return noauth     
     return RedirectResponse("/user/login", status_code = status.HTTP_303_SEE_OTHER)
+
+###############################
+#Редактирование страницы\Page Edit
+###############################
+@router.get("/page/edit/{page_id}")
+async def edit_page_form(request: Request,
+                         page_id: int,
+                         current_user = Depends(get_current_user),
+                         db: AsyncSession = Depends(get_db),
+                         api: bool = False):  
+    if api:
+        raise noapi
+    if auth_and_roles_required(current_user, ["administrator"]):
+        categories = (await db.execute(select(Category)))\
+                                       .scalars()\
+                                       .all()
+        page = (await db.execute(select(Page)\
+                                 .filter(Page.id == page_id)))\
+                                 .scalar_one_or_none()
+        return templates.TemplateResponse("page_edit_form.html",
+                                              {
+                                               "request": request,
+                                               "cfg": cfg_site,
+                                               "page": page,
+                                               "categories": categories,
+                                              }
+                                          )
+    return RedirectResponse("/user/login", status_code = status.HTTP_303_SEE_OTHER)
+
+@router.post("/page/edit/{page_id}")
+async def edit_page(request: Request,
+                    page_id: int,
+                    page: Annotated[PageCreate, Form()], 
+                    current_user = Depends(get_current_user),
+                    db: AsyncSession = Depends(get_db),
+                    api: bool = False):
+    if auth_and_roles_required(current_user, ["administrator"]):
+        try:
+            template =\
+            page.template + ".html" if str(page.template) else None  
+            page = Page(page_name = page.name,
+                        content = page.content,
+                        slug = page.slug,
+                        category_id = page.category_id)
+            page_settings = PageSettings(title = page.page_name,
+                                         template = template)
+            page.page_settings = page_settings      
+            db.add(page)
+            await db.commit()
+            await db.refresh(page)
+        except Exception as e:
+            print(e)
+            return templates.TemplateResponse("error.html", 
+                                                  { 
+                                                    "request": request,
+                                                    "error": e
+                                                  }
+                                              )
+        if api:
+            return page
+        return RedirectResponse("/adminpanel/pages?message=created",
+                                status_code = status.HTTP_303_SEE_OTHER)
+    if api:
+        return noauth     
+    return RedirectResponse("/user/login", status_code = status.HTTP_303_SEE_OTHER)

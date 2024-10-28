@@ -18,6 +18,9 @@ class PageBase(BaseModel):
 class PageCreate(PageBase):
     template: Optional[str]
 
+class PageEdit(PageCreate):
+    pass
+
 class Page(PageBase):
     id: int
 
